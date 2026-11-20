@@ -482,14 +482,55 @@ html[data-nav="dark"] .nav::before {
 
 /* ───────── Ecosystem ───────── */
 .ecosystem {
-  background: var(--ivory);
-  padding: clamp(90px, 16vh, 200px) 0 clamp(70px, 12vh, 140px);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(60px, 10vh, 120px) 0 clamp(90px, 14vh, 180px);
+}
+/* Soft light that echoes the hero and cell imagery: lavender, warm amber, pale teal. */
+.eco__glow {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+}
+.eco__glow--a {
+  left: -10vw;
+  top: 14%;
+  width: 54vw;
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, rgba(120, 132, 235, 0.2), transparent);
+}
+.eco__glow--b {
+  right: -12vw;
+  bottom: 4%;
+  width: 56vw;
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, rgba(255, 190, 140, 0.24), transparent);
+}
+.eco__head {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: clamp(12px, 2vw, 28px);
+  align-items: end;
+}
+.eco__head > div {
+  grid-column: 1 / 10;
 }
 .eco__head .kicker {
   margin-bottom: 28px;
 }
+.eco__lead {
+  grid-column: 10 / 13;
+  max-width: 26ch;
+  padding-bottom: 0.6em;
+}
 .brand {
-  margin-top: clamp(64px, 12vh, 140px);
+  margin-top: clamp(56px, 10vh, 120px);
+}
+.eco__thread + .brand {
+  margin-top: clamp(-115px, -8vw, -50px);
 }
 .brand__grid {
   display: grid;
@@ -497,54 +538,41 @@ html[data-nav="dark"] .nav::before {
   column-gap: clamp(12px, 2vw, 28px);
   align-items: center;
 }
-.brand__visual {
-  grid-column: 1 / 8;
-  position: relative;
-  aspect-ratio: 1 / 0.92;
-  border-radius: 32px;
-  overflow: hidden;
+.brand__grid > .lens {
+  grid-column: 1 / 6;
 }
-.brand__grid--flip .brand__visual {
-  grid-column: 6 / 13;
+.brand__grid > .brand__text {
+  grid-column: 7 / 13;
+}
+.brand__grid--flip > .lens {
+  grid-column: 8 / 13;
   grid-row: 1;
 }
-.brand__grid--flip .brand__text {
-  grid-column: 1 / 6;
+.brand__grid--flip > .brand__text {
+  grid-column: 1 / 7;
   grid-row: 1;
 }
 .brand__text {
-  grid-column: 9 / 13;
   display: grid;
   gap: 22px;
   justify-items: start;
 }
-.brand__grid--flip .brand__text {
-  grid-column: 1 / 6;
+.brand__index {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
-.brand__visual--dark {
-  background: #0c1040;
-}
-.brand__visual--light {
-  background: var(--porcelain);
-  border: 1px solid var(--hair);
-}
-.brand__parallax {
-  position: absolute;
-  inset: -6% 0;
-  will-change: transform;
-}
-.brand__visual--dark img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 45%;
+.brand__index::before {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: currentColor;
 }
 .brand__name {
   font-size: clamp(3rem, 6.2vw, 7.2rem);
   font-weight: 300;
   letter-spacing: -0.055em;
   line-height: 0.95;
-  text-transform: none;
 }
 .brand__tag {
   font-size: clamp(1.3rem, 1.9vw, 1.8rem);
@@ -553,26 +581,80 @@ html[data-nav="dark"] .nav::before {
   max-width: 24ch;
 }
 
-.converge {
+/* Lens: a round, luminous stage for each brand (no boxes). */
+.lens {
+  position: relative;
+  width: 100%;
+  max-width: 470px;
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+.lens::before {
+  content: "";
+  position: absolute;
+  inset: -16%;
+  z-index: -1;
+  background: radial-gradient(closest-side, var(--lens-glow), transparent);
+}
+.lens--enervara {
+  --lens-glow: rgba(110, 122, 240, 0.32);
+}
+.lens--oryndoc {
+  --lens-glow: rgba(255, 186, 128, 0.34);
+}
+.lens__float {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.lens__img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 34px 44px rgba(80, 70, 170, 0.28));
 }
-.converge path {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.34);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 2.2s var(--ease) calc(var(--i) * 90ms + 300ms);
+.lens--oryndoc .lens__img {
+  filter: drop-shadow(0 34px 44px rgba(214, 140, 70, 0.3));
 }
-.is-in .converge path {
-  stroke-dashoffset: 0;
+/* Wide artwork centred inside the product ring */
+.lens__img--wide {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 92%;
+  height: auto;
+  transform: translate(-52%, -50%);
 }
-.converge circle {
-  fill: var(--teal-soft);
+.lens__ring {
+  position: absolute;
+  inset: -5%;
+  border-radius: 50%;
+  border: 1px solid var(--hair);
+  pointer-events: none;
+}
+.lens__ring--dash {
+  inset: -12%;
+  border: 1px dashed rgba(18, 20, 22, 0.2);
+  animation: spin 120s linear infinite;
+}
+.lens__ring--dash::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 14px 2px rgba(47, 143, 138, 0.5);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .orbit {
@@ -580,18 +662,16 @@ html[data-nav="dark"] .nav::before {
   inset: 0;
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
 .orbit__ring {
   fill: none;
-  stroke: var(--hair);
+  stroke: rgba(18, 20, 22, 0.2);
   stroke-dasharray: 2 6;
 }
-.orbit__ring--in {
-  stroke: rgba(18, 20, 22, 0.22);
-  stroke-dasharray: none;
-}
-.orbit__node line {
-  stroke: var(--hair);
+.orbit__link {
+  fill: none;
+  stroke: rgba(18, 20, 22, 0.16);
   stroke-width: 1;
 }
 .orbit__node circle {
@@ -602,9 +682,6 @@ html[data-nav="dark"] .nav::before {
   letter-spacing: 0.02em;
   fill: var(--graphite);
   font-family: var(--sans);
-}
-.orbit__core {
-  fill: var(--teal);
 }
 .is-in .orbit__node circle {
   animation: pulse 4s ease-in-out infinite;
@@ -617,27 +694,71 @@ html[data-nav="dark"] .nav::before {
     transform: scale(1.5);
   }
 }
-.mark {
+/* Thread: the visible connection between the two brands. */
+.eco__thread {
+  --p: 0;
+  position: relative;
+  height: clamp(130px, 24vh, 260px);
+  margin-top: clamp(24px, 5vh, 56px);
+}
+.eco__thread svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.thread__base,
+.thread__live {
+  fill: none;
+}
+.thread__base {
+  stroke: rgba(18, 20, 22, 0.2);
+  stroke-dasharray: 3 7;
+}
+.thread__live {
+  stroke: url(#thread-g);
+  stroke-width: 1.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--p));
+}
+.thread__node {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 5px rgba(47, 143, 138, 0.16);
+}
+.thread__node--a {
+  left: 20.8%;
+  top: 0;
+  background: #6c78e6;
+  box-shadow: 0 0 0 5px rgba(108, 120, 230, 0.18);
+}
+.thread__node--b {
+  left: 79.2%;
+  top: 100%;
+  background: #f0a56c;
+  box-shadow: 0 0 0 5px rgba(240, 165, 108, 0.22);
+  opacity: clamp(0, calc((var(--p) - 0.9) * 10), 1);
+}
+.thread__tag {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 21%;
-  aspect-ratio: 460 / 510;
   transform: translate(-50%, -50%);
-  overflow: hidden;
-  border-radius: 20px;
-  background: #fff;
-  box-shadow:
-    0 0 0 1px var(--hair),
-    0 18px 50px -18px rgba(18, 20, 22, 0.25);
-}
-.mark img {
-  position: absolute;
-  width: 156.7%;
-  max-width: none;
-  height: auto;
-  left: -19.6%;
-  top: -9.8%;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--porcelain);
+  border: 1px solid var(--hair);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  white-space: nowrap;
 }
 
 .products {
@@ -924,9 +1045,26 @@ html[data-nav="dark"] .nav::before {
   .vision__copy {
     margin-top: 56px;
   }
-  .brand__visual {
-    aspect-ratio: 1 / 1;
-    margin-bottom: 36px;
+  .lens {
+    max-width: 360px;
+    margin-bottom: 56px;
+  }
+  .eco__head {
+    display: block;
+  }
+  .eco__lead {
+    margin-top: 24px;
+  }
+  .eco__thread {
+    display: none;
+  }
+  .brand__grid > .brand__text,
+  .brand__grid--flip > .brand__text {
+    margin-top: 0;
+  }
+  .brand,
+  .eco__thread + .brand {
+    margin-top: 80px;
   }
   .philosophy__head {
     position: static;
@@ -981,7 +1119,7 @@ html[data-nav="dark"] .nav::before {
     transform: none;
     opacity: 1;
   }
-  .converge path {
+  .thread__live {
     stroke-dashoffset: 0;
   }
 }
